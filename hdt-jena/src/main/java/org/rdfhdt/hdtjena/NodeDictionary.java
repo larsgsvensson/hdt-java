@@ -149,31 +149,33 @@ public class NodeDictionary {
 		return val;
 	}
 	
-	public static String nodeToStr(Node node, PrefixMapping map) {
+	public String nodeToStr(Node node, PrefixMapping map) {
 		if(node.isURI()) {
 			return map.expandPrefix(node.getURI());
 		} else {
 			return nodeToStr(node);
 		}
 	}
-	
-	public static String nodeToStr(Node node) {
-		if(node==null || node.isVariable()) {
+
+	public String nodeToStr(final Node node) {
+		if (node == null || node.isVariable()) {
 			return "";
-		}else if(node.isURI()) {
+		} else if (node.isURI()) {
 			return node.getURI();
-		} else if(node.isLiteral()) {
-			RDFDatatype t = node.getLiteralDatatype();
-			
-			if(t==null || XSDDatatype.XSDstring.getURI().equals(t.getURI())) {
+		} else if (node.isLiteral()) {
+			final RDFDatatype t = node.getLiteralDatatype();
+
+			if (t == null || XSDDatatype.XSDstring.getURI().equals(t.getURI())) {
 				// String
-				return "\""+node.getLiteralLexicalForm()+"\"";
-			} else if(RDFLangString.rdfLangString.equals(t)) {
+				return "\"" + node.getLiteralLexicalForm() + "\"";
+			} else if (RDFLangString.rdfLangString.equals(t)) {
 				// Lang
-				return "\""+node.getLiteralLexicalForm()+"\"@"+node.getLiteralLanguage();
+				return "\"" + node.getLiteralLexicalForm() + "\"@"
+						+ node.getLiteralLanguage();
 			} else {
 				// Typed
-				return "\""+node.getLiteralLexicalForm()+"\"^^<"+t.getURI()+">";
+				return "\"" + node.getLiteralLexicalForm() + "\"^^<"
+						+ t.getURI() + ">";
 			}
 		} else {
 			return node.toString();
